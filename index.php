@@ -23,6 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tempRulesFile = sys_get_temp_dir() . '/' . uniqid() . '.xml';
     file_put_contents($tempRulesFile, $rules ?: 'rulesets/java/quickstart.xml'); // Fallback to basic rules if none provided
 
+    if (!function_exists('shell_exec')) {
+        http_response_code(500);
+        echo json_encode(['error' => 'shell_exec is disabled']);
+        exit;
+    }
+    
     // Run PMD via shell_exec
     $pmdOutput = shell_exec('pmd check -d ' . escapeshellarg($tempCodeFile) . ' -R ' . escapeshellarg($tempRulesFile) . ' -f json 2>&1');
 
