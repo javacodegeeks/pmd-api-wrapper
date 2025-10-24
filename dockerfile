@@ -7,9 +7,9 @@ RUN apt-get update && apt-get install -y unzip wget && \
     tar -xzf OpenJDK11U-jdk_x64_linux_hotspot_11.0.20_8.tar.gz && \
     rm OpenJDK11U-jdk_x64_linux_hotspot_11.0.20_8.tar.gz && \
     ln -s /opt/jdk-11.0.20+8/bin/java /usr/local/bin/java && \
-    wget https://github.com/pmd/pmd/releases/download/pmd_releases/7.17.0/pmd-bin-7.17.0.zip && \
-    unzip pmd-bin-7.17.0.zip && \
-    rm pmd-bin-7.17.0.zip && \
+    wget https://github.com/pmd/pmd/releases/download/pmd_releases%2F7.17.0/pmd-dist-7.17.0-bin.zip  && \
+    unzip pmd-dist-7.17.0-bin.zip && \
+    rm pmd-dist-7.17.0-bin.zip && \
     ln -s /opt/pmd-bin-7.17.0/bin/pmd /usr/local/bin/pmd
 
 # Copy app
