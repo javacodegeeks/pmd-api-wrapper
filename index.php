@@ -63,19 +63,30 @@ if (isset($rulesFile) && strpos($rulesFile, sys_get_temp_dir()) === 0) {
     @unlink($rulesFile);
 }
 
-/* ---------- 8. Parse JSON output ---------- */
-if ($pmdRaw === null || $pmdRaw === '') {
-    echo json_encode(['violations' => [], 'debug' => 'PMD returned no data']);
+/* ---------- 8. Extract JSON from raw output (strip warnings) ---------- */
+$jsonStart = strpos($pmdRaw, '{');
+if ($jsonStart === false) {
+    http_response_code(500);
+    echo json_encode(['error' => 'No JSON found in PMD output', 'raw' => $pmdRaw]);
     exit;
 }
 
-$pmdJson = json_decode($pmdRaw, true);
+$cleanJson = substr($pmdRaw, $jsonStart);
+$pmdJson = json_decode($cleanJson, true);
+
 if (json_last_error() !== JSON_ERROR_NONE) {
     http_response_code(500);
-    echo json_encode(['error' => 'PMD JSON parse error', 'raw' => $pmdRaw]);
+    echo json_encode([
+        'error' => 'JSON decode failed: ' . json_last_error_msg(),
+        'raw' => $pmdRaw,
+        'clean' => $cleanJson
+    ]);
     exit;
 }
 
-/* ---------- 9. Return only the violations ---------- */
+/* ---------- 9. Return violations ---------- */
 $violations = $pmdJson['files'][0]['violations'] ?? [];
-echo json_encode(['violations' => $violations, 'debug' => 'OK']);
+echo json_encode([
+    'violations' => $violations,
+    'debug' => 'PMD executed and parsed successfully'
+]);
