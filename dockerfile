@@ -12,6 +12,9 @@ RUN apt-get update && apt-get install -y unzip wget && \
     rm pmd-dist-7.17.0-bin.zip && \
     ln -s /opt/pmd-bin-7.17.0/bin/pmd /usr/local/bin/pmd
 
+# Export PATH for the Apache user (www-data)
+ENV PATH="/usr/local/bin:${PATH}"
+
 # Copy app
 COPY . /var/www/html/
 
