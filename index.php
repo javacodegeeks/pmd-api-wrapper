@@ -45,7 +45,7 @@ if (trim($ver) === '') {
 
 /* ---------- 4. Build the exact command (full path) ---------- */
 $cmd = sprintf(
-    '/usr/local/bin/pmd check -d %s -R %s -f json 2>&1',
+    '/usr/local/bin/pmd check -d %s -R %s -f json -v 2>&1',
     escapeshellarg($srcFile),
     escapeshellarg($rulesFile)
 );
