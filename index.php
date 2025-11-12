@@ -27,7 +27,7 @@ if ($code === false) {
     echo json_encode(['error' => 'Invalid base64 code']);
     exit;
 }
-if ($rules) {
+if ($rules !== '') {
     $rules = urldecode(base64_decode($rules_b64, true));
     if ($rules === false) {
         http_response_code(400);
