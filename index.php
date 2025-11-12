@@ -14,24 +14,24 @@ $input = json_decode(file_get_contents('php://input'), true);
 $code  = $input['code'] ?? '';
 $rules = $input['rules'] ?? '';
 
-if ($code_b64 === '') {
+if ($code === '') {
     http_response_code(400);
     echo json_encode(['error' => 'No code provided']);
     exit;
 }
 
-// Decode — exact original code and rules
+// Decode — exact original code and ruleset
 $code = urldecode(base64_decode($code, true));
 if ($code === false) {
     http_response_code(400);
-    echo json_encode(['error' => 'Invalid base64 for code']);
+    echo json_encode(['error' => 'Invalid base64 code']);
     exit;
 }
 if ($rules) {
     $rules = urldecode(base64_decode($rules_b64, true));
     if ($rules === false) {
         http_response_code(400);
-        echo json_encode(['error' => 'Invalid base64 for ruleset']);
+        echo json_encode(['error' => 'Invalid base64 ruleset']);
         exit;
     }
 }
